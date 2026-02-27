@@ -1,10 +1,13 @@
-import { StrictMode } from 'react'
+import React from 'react'
+import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-// comment to run the stage
+import { store } from './store/store';
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+  <React.StrictMode>
+    <Provider store={store}> {/* Aici se întâmplă magia */}
+      <App />
+    </Provider>
+  </React.StrictMode>
 )
