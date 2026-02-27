@@ -3,21 +3,35 @@ import { loginUser } from '../services/authService';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import { Container, Paper, Typography, Box } from '@mui/material';
-const Login = ({ onLoginSuccess }) => {
+import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { updateToken } from '../store/authSlice';
+const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
         try {
+            //TODO:o vefrificare de email si parola ca si format 
+            if (!formData.email || !formData.password) {
+                setError('Email și parolă sunt obligatorii');
+                setLoading(false);
+                return;
+            }
             const data = await loginUser(formData.email, formData.password);
             console.log("Succes!", data);
-            onLoginSuccess(data); // trimit  datele către App.jsx
+            dispatch(updateToken({
+                token: data.token,
+                user: data.user
+            }));
+            navigate('/home');
         } catch (err) {
-            setError(err);
+            setError(err.message || "Email sau parolă incorecte");
         } finally {
             setLoading(false);
         }
