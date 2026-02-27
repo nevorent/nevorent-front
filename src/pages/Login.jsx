@@ -24,7 +24,7 @@ const Login = () => {
                 return;
             }
             const data = await loginUser(formData.email, formData.password);
-            console.log("Succes!", data);
+            //console.log("Succes!", data);
             dispatch(updateToken({
                 token: data.token,
                 user: data.user
