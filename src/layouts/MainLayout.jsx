@@ -6,7 +6,7 @@ import Button from '../components/Button';
 
 // import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import Navbar from '../components/NavBar';
+import Navbar from '../components/Navbar';
 const MainLayout = () => {
 
 
