@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { loginUser } from '../services/authService';
-import FormInput from '../components/FormInput';
-import Button from '../components/Button';
+import { loginUser } from '../../services/authService';
+import FormInput from '../../components/FormInput';
+import Button from '../../components/Button';
 import { Container, Paper, Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { updateToken } from '../store/authSlice';
+import { updateToken } from '../../store/authSlice';
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');

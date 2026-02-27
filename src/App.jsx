@@ -7,14 +7,22 @@ import { resetAuth } from './store/authSlice';
 import { verifyToken } from './services/authService';
 
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import MainLayout from './layouts/MainLayout';
 
 // --- CONFIGURARE RUTE ---
 const publicRoutes = [
-  { path: '/', element: <MainLayout /> },
-  { path: '/home', element: <MainLayout /> },
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'home', element: <Home /> },
+
+      { path: '/my-properties', element: <Navigate replace to="/login" /> },
+    ]
+  },
   { path: '/login', element: <Login /> },
   { path: '/register', element: <Register /> },
 ];
@@ -26,7 +34,7 @@ const authenticatedRoutesConfig = [
     children: [// paginile care se pot accesa din MainLayout
       { index: true, element: <Home /> },
       { path: 'home', element: <Home /> },
-      { path: 'login', element: <Login /> },
+      // { path: 'login', element: <Login /> },
     ],
   },
   //cat timp e logat si vrea login sa il trimita la home 
