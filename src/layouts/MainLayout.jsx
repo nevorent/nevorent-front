@@ -5,23 +5,22 @@ import AccountMenu from '../components/AccountMenu';
 import Button from '../components/Button';
 import Navbar from '../components/Navbar';
 import { Outlet } from 'react-router-dom';
-// import TabMenu from '../components/TabMenu';
+import TabMenu from '../components/TabMenu';
+import { MainMenuList } from '../components/MainMenuList';
+import { useLocation } from 'react-router-dom';
 const MainLayout = () => {
-
-
-    // const userLogged = useSelector((state) => state.auth.user);
-    // console.log("User in MainLayout:", userLogged);
-
+    const location = useLocation();
+    const isMessagesPage = location.pathname === '/messages';
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            {/* NAVBAR */}
+            {/* navbar*/}
             <Navbar />
 
             {/* Container principal sub Navbar */}
             <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
 
                 {/*sidebar*/}
-                <SideBar />
+                <SideBar ><MainMenuList /></SideBar>
 
                 {/* continut dreapta sidebar  */}
                 <Box
@@ -34,10 +33,11 @@ const MainLayout = () => {
                         backgroundColor: '#f5f5f5'
                     }}
                 >
-
+                    {/* TAB MENU  */}
+                    <TabMenu />
 
                     {/* PAGINA EFECTIVĂ */}
-                    <Box sx={{ p: 3, flexGrow: 1 }}>
+                    <Box sx={{ p: isMessagesPage ? 0 : 3, flexGrow: 1 }}>
                         <Outlet />
                     </Box>
                 </Box>

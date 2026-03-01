@@ -5,8 +5,9 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GenericDrawer from "./GenericDrawer";
 import { MainMenuList } from "./MainMenuList";
+import { Children } from "react";
 
-const SideBarMain = () => {
+const SideBar = ({ children }) => {
 
     return (
         <GenericDrawer anchor="left" trigger={
@@ -18,9 +19,9 @@ const SideBarMain = () => {
                 <MoreVertIcon />
             </IconButton>}>
 
-            <MainMenuList />
+            {children}
         </GenericDrawer>
 
     );
 }
-export default SideBarMain;
+export default SideBar;
