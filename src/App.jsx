@@ -10,6 +10,10 @@ import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import MainLayout from './layouts/MainLayout';
+import AllAdsPage from './pages/adsPage/AllAdsPage';
+import FavouriteAdsPage from './pages/adsPage/AllAdsPage';
+import MyAdsPage from './pages/adsPage/MyAdsPage';
+
 
 // --- CONFIGURARE RUTE ---
 const publicRoutes = [
@@ -17,14 +21,17 @@ const publicRoutes = [
     path: '/',
     element: <MainLayout />,
     children: [
-      { index: true, element: <Home /> },
-      { path: 'home', element: <Home /> },
-
+      { index: true, element: <AllAdsPage /> },
+      { path: 'home', element: <AllAdsPage /> },
+      { path: 'all-ads', element: <AllAdsPage /> },
+      { path: 'favorites', element: <FavouriteAdsPage /> },
       { path: '/my-properties', element: <Navigate replace to="/login" /> },
     ]
   },
   { path: '/login', element: <Login /> },
   { path: '/register', element: <Register /> },
+
+
 ];
 
 const authenticatedRoutesConfig = [
@@ -32,14 +39,20 @@ const authenticatedRoutesConfig = [
     path: '/',
     element: <MainLayout />,
     children: [// paginile care se pot accesa din MainLayout
-      { index: true, element: <Home /> },
-      { path: 'home', element: <Home /> },
-      // { path: 'login', element: <Login /> },
+      { index: true, element: <AllAdsPage /> },
+      { path: 'home', element: <AllAdsPage /> },
+      { path: 'my-ads', element: <MyAdsPage /> },
+      { path: 'all-ads', element: <AllAdsPage /> },
+      { path: 'favorites', element: <FavouriteAdsPage /> },
+      { path: '/my-properties', element: <Navigate replace to="/login" /> },
+      // { path: '/messages', element: <MessagePage /> },
+
     ],
   },
   //cat timp e logat si vrea login sa il trimita la home 
-  { path: '/login', element: <Navigate replace to="/" /> },
-  { path: '*', element: <Navigate replace to="/" /> },
+  { path: '/login', element: <Navigate replace to="/all-ads" /> },
+  { path: '*', element: <Navigate replace to="/all-ads" /> },
+
 ];
 
 const routerOptions = {

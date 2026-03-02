@@ -1,5 +1,5 @@
 import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
-import SideBar from '../components/SideBar';
+
 import AccountMenu from '../components/AccountMenu';
 import Button from '../components/Button';
 import { resetAuth } from '../store/authSlice';
