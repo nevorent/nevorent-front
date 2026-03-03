@@ -39,13 +39,14 @@ export default function TabMenu() {
                             component={Link}
                             to="/all-ads"
                         />
-
-                        <Tab
-                            label="Anunțuri favorite"
-                            value="3"
-                            component={Link}
-                            to="/favorites"
-                        />
+                        {userLogged && (
+                            <Tab
+                                label="Anunțuri favorite"
+                                value="3"
+                                component={Link}
+                                to="/favorites"
+                            />
+                        )}
                     </TabList>
                 </Box>
             </TabContext>

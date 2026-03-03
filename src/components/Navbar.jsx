@@ -52,10 +52,12 @@ const Navbar = () => {
     console.log("User in Navbar:", userLogged);
     const dispatch = useDispatch();
     const handleLogout = () => {
-        dispatch(resetAuth()); // Curăță Redux + LocalStorage
-        navigate('/home'); // Redirecționează la login
+        dispatch(resetAuth());
+        navigate('/home');
     }
-    return (<AppBar position="static" sx={{ backgroundColor: '#ffffff', color: '#333', boxShadow: 1 }}>
+    return (<AppBar position="static" sx={{
+        backgroundColor: '#ffffff', color: '#333', boxShadow: 1, flexDirection: "column", overflow: "hidden"
+    }}>
         <Toolbar>
 
             <Typography
