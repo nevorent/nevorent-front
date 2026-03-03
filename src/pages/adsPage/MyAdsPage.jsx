@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
@@ -24,10 +24,9 @@ const StyledFab = styled(Fab)({
 const MyAdsPage = () => {
 
     const userLogged = useSelector((state) => state.auth.user);
-    const myAds = useMemo(() => {
-        if (!userLogged) return [];
-        return mockAds.filter(ad => ad.user?.name === userLogged.name);
-    }, [userLogged]);
+    console.log("User in MyAdsPage:", userLogged);
+    const myAds = mockAds.filter(ad => ad.user.name === userLogged.name);
+    console.log("My Ads:", myAds);
     const navigate = useNavigate();
     const handleClick = () => {
         console.log("Add new ad");

@@ -4,7 +4,7 @@ import mockAds from '../../components/ads/mockAds';
 //ar trebui sa fie adaugate la favorite de catre utilizatorul logat
 //vorbim cu backendul 
 //deocamdata le afiseaza pe toate 
-export const FavoriteAdsPage = () => {
+const FavoriteAdsPage = () => {
     const myAds = mockAds.filter(ad => ad.isActive === true);
     return (
         <AdsGrid mockAds={myAds} />

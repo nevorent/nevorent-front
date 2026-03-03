@@ -16,20 +16,39 @@ const TAB_PATHS = {
 export default function TabMenu() {
     const location = useLocation();
     const userLogged = useSelector((state) => state.auth.user);
-    const currentTab = TAB_PATHS[location.pathname] || '2'; // default to “all ads”
-
+    const currentTab = TAB_PATHS[location.pathname] || '2'; // default tabul allAds
 
     return (
-        <Box sx={{ width: '100%', bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', position: 'sticky', top: 0, zIndex: 100 }}>
+        <Box sx={{ width: 'auto', bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', position: 'sticky', top: 0, zIndex: 100 }}>
             <TabContext value={currentTab}>
                 <Box>
-                    <TabList centered>
+
+                    <TabList aria-label="tab menu" variant="scrollable"
+                        scrollButtons="auto"
+                        allowScrollButtonsMobile
+                        sx={{
+                            '& .MuiTabs-scroller': {
+                                display: 'flex',
+                                justifyContent: 'center', // Aceasta este alternativa sigură la "centered"
+                            },
+                            '& .MuiTabs-flexContainer': {
+                                // Ne asigurăm că containerul nu strivește tab-urile
+                                minWidth: 'fit-content'
+                            }
+                        }} >
                         {userLogged && (
                             <Tab
                                 label="Anunțurile mele"
                                 value="1"
                                 component={Link}
                                 to="/my-ads"
+                                sx={{
+                                    minWidth: 'fit-content',
+                                    flexShrink: 0,
+                                    whiteSpace: 'nowrap',
+                                    // Această regulă previne span-ul să iasă din buton
+                                    overflow: 'hidden',
+                                }}
                             />
                         )}
 
@@ -38,15 +57,28 @@ export default function TabMenu() {
                             value="2"
                             component={Link}
                             to="/all-ads"
+                            sx={{
+                                minWidth: 'fit-content',
+                                flexShrink: 0,
+                                whiteSpace: 'nowrap',
+                                // Această regulă previne span-ul să iasă din buton
+                                overflow: 'hidden',
+                            }}
                         />
-                        {userLogged && (
-                            <Tab
-                                label="Anunțuri favorite"
-                                value="3"
-                                component={Link}
-                                to="/favorites"
-                            />
-                        )}
+
+                        <Tab
+                            label="Anunțuri favorite"
+                            value="3"
+                            component={Link}
+                            to="/favorites"
+                            sx={{
+                                minWidth: 'fit-content',
+                                flexShrink: 0,
+                                whiteSpace: 'nowrap',
+                                // Această regulă previne span-ul să iasă din buton
+                                overflow: 'hidden',
+                            }}
+                        />
                     </TabList>
                 </Box>
             </TabContext>

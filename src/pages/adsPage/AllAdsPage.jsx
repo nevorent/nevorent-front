@@ -6,20 +6,21 @@ import AdsItem from '../../components/ads/AdsItem';
 import AdsGrid from '../../components/ads/AdsGrid';
 
 import mockAds from '../../components/ads/mockAds';
+// import { Typography } from '@mui/material'
 import MapView from '../../components/map/MapView';
 const AllAdsPage = () => {
     const myAds = mockAds.filter(ad => ad.isActive === true);
     const [adsInView, setAdsInView] = useState(myAds);
-
     return (
         <Box sx={{
             display: 'flex',
-            overflow: 'hidden',
+            overflow: 'hidden', // Împiedică pagina să scroleze cu totul
+            height: '100%',     // Ocupă tot spațiul oferit de părinte (MainLayout)
             width: '100%',
             margin: 0,
             padding: 0,
         }}>
-            {/* COLOANA ANUNTURI*/}
+            {/* COLOANA ANUNȚURI */}
             <Box sx={{
                 p: 3,
                 width: '60%',
