@@ -65,20 +65,20 @@ export default function TabMenu() {
                                 overflow: 'hidden',
                             }}
                         />
-
-                        <Tab
-                            label="Anunțuri favorite"
-                            value="3"
-                            component={Link}
-                            to="/favorites"
-                            sx={{
-                                minWidth: 'fit-content',
-                                flexShrink: 0,
-                                whiteSpace: 'nowrap',
-                                // Această regulă previne span-ul să iasă din buton
-                                overflow: 'hidden',
-                            }}
-                        />
+                        {userLogged && (
+                            <Tab
+                                label="Anunțuri favorite"
+                                value="3"
+                                component={Link}
+                                to="/favorites"
+                                sx={{
+                                    minWidth: 'fit-content',
+                                    flexShrink: 0,
+                                    whiteSpace: 'nowrap',
+                                    // Această regulă previne span-ul să iasă din buton
+                                    overflow: 'hidden',
+                                }}
+                            />)}
                     </TabList>
                 </Box>
             </TabContext>

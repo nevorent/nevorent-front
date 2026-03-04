@@ -4,7 +4,7 @@ import AdsItem from '../../components/ads/AdsItem';
 import { useLocation } from 'react-router-dom';
 const AdsGrid = ({ mockAds }) => {
     const location = useLocation();
-    const isAllAdsPage = location.pathname === '/all-ads' || location.pathname === '/';
+    const isAllAdsPage = location.pathname === '/all-ads' || location.pathname === '/' || location.pathname === '/home';
 
     return (
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

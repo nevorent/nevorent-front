@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom';
 const MainLayout = () => {
     const location = useLocation();
     const isMessagesPage = location.pathname === '/messages' || location.pathname === '/my-tenants' || location.pathname === '/possible-tenants';
-    const isSplitPage = location.pathname === '/all-ads';
+    const isSplitPage = location.pathname === '/all-ads' || location.pathname === '/home';
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             {/* navbar*/}
