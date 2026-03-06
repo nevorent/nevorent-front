@@ -29,11 +29,11 @@ export const loginUser = async (email, password) => {
 
             if (foundUser && foundUser.password === password) {
                 //am salvat in token si rolul userului pentru a putea verifica ulterior
-                const fakeToken = `token-secret-${foundUser.role}`;
+                const fakeToken = `token-secret-${foundUser.role}-${email}`;
 
                 resolve({
                     token: fakeToken,
-                    user: { name: foundUser.name, role: foundUser.role }
+                    user: { name: foundUser.name, role: foundUser.role, email: email }
                 });
             } else {
                 reject("Email sau parolă incorectă!");
@@ -56,11 +56,11 @@ export const verifyToken = async (token) => {
         setTimeout(() => {
             // verific rolul imi trebuie pentru anumite pagini 
             if (token.includes("tenant")) {
-                resolve({ name: "Ioan Chiriașul", role: "tenant" });
+                resolve({ name: "Ioan Chiriașul", role: "tenant", email: "chirias@test.com" });
             } else if (token.includes("owner")) {
-                resolve({ name: "Mihai Proprietarul", role: "owner" });
+                resolve({ name: "Mihai Proprietarul", role: "owner", email: "owner@test.com" });
             } else if (token.includes("maintenance")) {
-                resolve({ name: "Echipa Tehnică", role: "maintenance" });
+                resolve({ name: "Echipa Tehnică", role: "maintenance", email: "service@test.com" });
             } else {
                 reject("Sesiune expirată!");
             }

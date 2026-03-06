@@ -24,12 +24,13 @@ const Login = () => {
                 return;
             }
             const data = await loginUser(formData.email, formData.password);
-            //console.log("Succes!", data);
+            console.log("Succes!", data);
             dispatch(updateToken({
                 token: data.token,
                 user: data.user
             }));
-            navigate('/home');
+            console.log("Token și user actualizat în Redux");
+            navigate('/all-ads');
         } catch (err) {
             setError(err.message || "Email sau parolă incorecte");
         } finally {
