@@ -15,6 +15,7 @@ import Button from '../../components/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import Content from '../../components/login/ContentLogin';
+import * as yup from 'yup';
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -27,50 +28,55 @@ const Card = styled(MuiCard)(({ theme }) => ({
         width: '450px',
     },
 }));
+const loginSchema = yup.object().shape({
+    email: yup
+        .string()
+        .required('Email-ul este obligatoriu.')
+        .email('Te rugăm să introduci o adresă de email validă.'),
+    password: yup
+        .string()
+        .required('Parola este obligatorie.')
+        .min(6, 'Parola trebuie să aibă cel puțin 6 caractere.'),
+});
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const [emailError, setEmailError] = useState(false);
-    const [emailErrorMessage, setEmailErrorMessage] = useState('');
-    const [passwordError, setPasswordError] = useState(false);
-    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [errors, setErrors] = useState({})
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const validateInputs = () => {
-        const { email, password } = formData;
-        let isValid = true;
-        if (!email || !/\S+@\S+\.\S+/.test(email)) {
-            setEmailError(true);
-            setEmailErrorMessage('Te rugăm să introduci o adresă de email validă.');
-            isValid = false;
-        } else {
-            setEmailError(false);
-            setEmailErrorMessage('');
+    const validateInputs = async () => {
+        try {
+            await loginSchema.validate(formData, { abortEarly: false });
+            setErrors({});
+            return true;
+        } catch (err) {
+            const newErrors = {};
+            err.inner.forEach((validationError) => {
+                newErrors[validationError.path] = validationError.message;
+            });
+            setErrors(newErrors);
+            return false;
         }
-        if (!password || password.length < 6) {
-            setPasswordError(true);
-            setPasswordErrorMessage('Parola trebuie să aibă cel puțin 6 caractere.');
-            isValid = false;
-        } else {
-            setPasswordError(false);
-            setPasswordErrorMessage('');
-        }
-        return isValid;
     };
 
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
-        if (name === 'email') setEmailError(false);
-        if (name === 'password') setPasswordError(false);
+        try {
+            await yup.reach(loginSchema, name).validate(value);
+            setErrors((prev) => ({ ...prev, [name]: '' }));
+        } catch (err) {
+
+            setErrors((prev) => ({ ...prev, [name]: err.message }));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const isFormValid = validateInputs();
+        const isFormValid = await validateInputs();
         if (!isFormValid) return;
         setLoading(true);
         setError('');
@@ -154,8 +160,8 @@ const Login = () => {
                         <FormControl fullWidth>
                             <FormLabel htmlFor="email" sx={{ mb: 1 }}>Email</FormLabel>
                             <TextField
-                                error={emailError}
-                                helperText={emailErrorMessage}
+                                error={!!errors.email}
+                                helperText={errors.email}
                                 id="email"
                                 type="email"
                                 name="email"
@@ -166,7 +172,7 @@ const Login = () => {
                                 autoFocus
                                 required
                                 variant="outlined"
-                                color={emailError ? 'error' : 'primary'}
+                                color={errors.email ? 'error' : 'primary'}
                             />
                         </FormControl>
 
@@ -183,8 +189,8 @@ const Login = () => {
                                 </Link>
                             </Box>
                             <TextField
-                                error={passwordError}
-                                helperText={passwordErrorMessage}
+                                error={!!errors.password}
+                                helperText={errors.password}
                                 id="password"
                                 name="password"
                                 type="password"
@@ -194,7 +200,7 @@ const Login = () => {
                                 autoComplete="current-password"
                                 required
                                 variant="outlined"
-                                color={passwordError ? 'error' : 'primary'}
+                                color={errors.password ? 'error' : 'primary'}
                             />
                         </FormControl>
 
@@ -216,7 +222,7 @@ const Login = () => {
 
                         <Typography sx={{ textAlign: 'center' }}>
                             Don&apos;t have an account?{' '}
-                            <Link href="/signup" variant="body2">
+                            <Link href="/register" variant="body2">
                                 Sign up
                             </Link>
                         </Typography>
