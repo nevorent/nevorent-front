@@ -1,9 +1,9 @@
 // src/services/authService.js
 const API_URL = 'https://api.nevorent.com/auth';
 const MOCK_USERS = {
-    "chirias@test.com": { password: "123", name: "Ioan Chiriașul", role: "tenant" },
-    "owner@test.com": { password: "123", name: "Mihai Proprietarul", role: "owner" },
-    "service@test.com": { password: "123", name: "Echipa Tehnică", role: "maintenance" }
+    "chirias@test.com": { password: "12345678", name: "Ioan Chiriașul", role: "tenant" },
+    "owner@test.com": { password: "12345678", name: "Mihai Proprietarul", role: "owner" },
+    "service@test.com": { password: "12345678", name: "Echipa Tehnică", role: "maintenance" }
 };
 export const loginUser = async (email, password) => {
     // aici trebuie sa introduc logica de login 
