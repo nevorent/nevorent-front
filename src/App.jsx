@@ -1,35 +1,104 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, Typography } from '@mui/material';
+
+import { resetAuth } from './store/authSlice';
+import { verifyToken } from './services/authService';
+
+import Home from './pages/Home';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import MainLayout from './layouts/MainLayout';
+import AllAdsPage from './pages/adsPage/AllAdsPage';
+import FavouriteAdsPage from './pages/adsPage/FavouritesAdsPage';
+import MyAdsPage from './pages/adsPage/MyAdsPage';
+
+import AdsNewPage from './pages/adsPage/AdsNewPage';
+
+// --- CONFIGURARE RUTE ---
+const publicRoutes = [
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <AllAdsPage /> },
+      { path: 'home', element: <AllAdsPage /> },
+      { path: 'all-ads', element: <AllAdsPage /> },
+      // { path: 'favorites', element: <FavouriteAdsPage /> },
+      { path: '/my-properties', element: <Navigate replace to="/login" /> },
+    ]
+  },
+  { path: '/login', element: <Login /> },
+  { path: '/register', element: <Register /> },
+
+
+];
+
+const authenticatedRoutesConfig = [
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [// paginile care se pot accesa din MainLayout
+      { index: true, element: <AllAdsPage /> },
+      { path: 'home', element: <AllAdsPage /> },
+      { path: 'my-ads', element: <MyAdsPage /> },
+      { path: 'all-ads', element: <AllAdsPage /> },
+      { path: 'favorites', element: <FavouriteAdsPage /> },
+      { path: '/my-properties', element: <Navigate replace to="/login" /> },
+
+      { path: '/ads/new', element: <AdsNewPage /> },
+
+    ],
+  },
+  //cat timp e logat si vrea login sa il trimita la home 
+  { path: '/login', element: <Navigate replace to="/all-ads" /> },
+  { path: '*', element: <Navigate replace to="/all-ads" /> },
+
+];
+
+const routerOptions = {
+  future: {
+    v7_relativeSplatPath: true,
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+    v7_partialHydration: true,
+    v7_skipActionErrorRevalidation: true,
+  },
+};
+
+const publicRouter = createBrowserRouter(publicRoutes, routerOptions);
+const authenticatedRouter = createBrowserRouter(authenticatedRoutesConfig, routerOptions);
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  useEffect(() => {
+    if (token) {
+      verifyToken(token)
+        .catch(() => {
+          dispatch(resetAuth()); //resetam token salvat pe null ca a expirat
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setLoading(false);
+    }
+  }, [token, dispatch]);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Typography variant="h6">Se încarcă...</Typography>
+      </Box>
+    );
+  }
+  return <RouterProvider router={token ? authenticatedRouter : publicRouter} />;
 }
 
-export default App
+export default App;
