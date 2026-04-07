@@ -1,7 +1,7 @@
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Badge, Typography, ListSubheader, Divider, Box } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-const ChatList = ({ onSelectChat, activeChatId, conversations }) => {
+const ChatList = ({ onSelectChat, activeChatId, conversations, userRole }) => {
     const location = useLocation();
     const formatChatDate = (timestamp) => {
         if (!timestamp) return "";
@@ -24,7 +24,7 @@ const ChatList = ({ onSelectChat, activeChatId, conversations }) => {
     };
     const tenants = conversations.filter(c => c.type === 'tenant');
     console.log(tenants);
-    const prospects = conversations.filter(c => c.type === 'prospect');
+    //const prospects = conversations.filter(c => c.type === 'prospect');
     const renderChatItem = (chat) => {
         return (
             <ListItem key={chat.id} sx={{ px: 1.5, py: 1, background: activeChatId === chat.id ? '#e6e7e8' : 'transparent' }} onClick={() => onSelectChat(chat)} >
@@ -52,32 +52,54 @@ const ChatList = ({ onSelectChat, activeChatId, conversations }) => {
     const tenantRef = useRef(null);
     const prospectRef = useRef(null);
     useEffect(() => {
-        if (location.pathname === '/my-tenants' && tenantRef.current) {
-            //nu ma duce pana la partea de sus 
-            tenantRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        } else if (location.pathname === '/possible-tenants' && prospectRef.current) {
-            prospectRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (userRole === "admin" || userRole === "owner") {
+            if (location.pathname === '/my-tenants' && tenantRef.current) {
+                //nu ma duce pana la partea de sus 
+                tenantRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else if (location.pathname === '/possible-tenants' && prospectRef.current) {
+                prospectRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
-    }, [location.pathname]);
+    }, [location.pathname, userRole]);
+    const renderOwnerView = () => {
+        const tenants = conversations.filter(c => c.type === 'tenant');
+        const prospects = conversations.filter(c => c.type === 'prospect');
+
+        return (
+            <>
+                {tenants.length > 0 && (
+                    <>
+                        <ListSubheader ref={tenantRef} sx={{ bgcolor: 'white', fontWeight: 'bold', color: 'primary.main' }}>
+                            Chiriași
+                        </ListSubheader>
+                        {tenants.map(chat => renderChatItem(chat))}
+                    </>
+                )}
+                {tenants.length > 0 && prospects.length > 0 && <Divider sx={{ my: 1 }} />}
+                {prospects.length > 0 && (
+                    <>
+                        <ListSubheader ref={prospectRef} sx={{ bgcolor: 'white', fontWeight: 'bold', color: 'secondary.main' }}>
+                            Posibili Chiriași
+                        </ListSubheader>
+                        {prospects.map(chat => renderChatItem(chat))}
+                    </>
+                )}
+            </>
+        );
+    };
+
+    // 2. Logica pentru CHIRIAȘ (listă simplă, fără categorii)
+    const renderSimpleView = () => (
+        conversations.map(chat => renderChatItem(chat))
+    );
+
     return (
         <List sx={{ pt: 2 }}>
-            {tenants.length > 0 && (
-                <>
-                    <ListSubheader ref={tenantRef} sx={{ bgcolor: 'white', fontWeight: 'bold', color: 'primary.main', lineHeight: '40px' }}>
-                        Chiriași
-                    </ListSubheader>
-                    {tenants.map(chat => renderChatItem(chat))}
-                </>
-            )}
-            {tenants.length > 0 && prospects.length > 0 && <Divider sx={{ my: 1 }} />}
-            {prospects.length > 0 && (
-                <>
-                    <ListSubheader ref={prospectRef} sx={{ bgcolor: 'white', fontWeight: 'bold', color: 'secondary.main', lineHeight: '40px' }}>
-                        Posibili Chiriași
-                    </ListSubheader>
-                    {prospects.map(chat => renderChatItem(chat))}
-                </>
-            )}
+            {/* Decidem ce interfață afișăm în funcție de rol */}
+            {(userRole === "admin" || userRole === "owner")
+                ? renderOwnerView()
+                : renderSimpleView()
+            }
         </List>
     );
 };

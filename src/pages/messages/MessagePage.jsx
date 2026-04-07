@@ -15,6 +15,9 @@ const MessagesPage = () => {
     const [allMessages, setAllMessages] = useState(mockMessages);
     const [selectedChat, setSelectedChat] = useState(null);
     const userLogged = useSelector((state) => state.auth.user);
+    console.log('User logged in MessagesPage:', userLogged);
+    const canSeeTab = userLogged.role
+    console.log('userRole in SideBarMessages:', canSeeTab);
     const [allConversations, setAllConversations] = useState(() => {
         return [...conversations].sort((a, b) => {
             const timeA = a.lastTimestamp || "";
@@ -68,7 +71,7 @@ const MessagesPage = () => {
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
-                    <SideBarMessages><ChatList conversations={allConversations} onSelectChat={setSelectedChat}
+                    <SideBarMessages userRole={canSeeTab}><ChatList userRole={canSeeTab} conversations={allConversations} onSelectChat={setSelectedChat}
                         activeChatId={selectedChat?.id}></ChatList></SideBarMessages>
 
                 </Box>

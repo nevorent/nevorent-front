@@ -19,11 +19,15 @@ const StyledFab = styled(Fab)({
     right: 0,
     margin: '0 auto',
 });
-const SideBarMessages = ({ children, width = 350 }) => {
+const SideBarMessages = ({ children, width = 350, userRole }) => {
+    // TODO :daca schimb rolul 
+    const hasAccess = userRole?.trim().toLowerCase() === "owner" || userRole?.trim().toLowerCase() === "admin";
+    console.log('userRole in SideBarMessages:', userRole);
+    console.log('hasAccess in SideBarMessages:', hasAccess);
     return (
         <React.Fragment>
             <CssBaseline />
-            <TabMessage />
+            {hasAccess && <TabMessage />}
             <Paper
                 // elevation={0}
                 sx={{
