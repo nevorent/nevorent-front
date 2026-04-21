@@ -11,7 +11,6 @@ import { useLocation } from 'react-router-dom';
 const MainLayout = () => {
     const location = useLocation();
     const isMessagesPage = location.pathname === '/messages' || location.pathname === '/my-tenants' || location.pathname === '/possible-tenants';
-    const isPaymentsPage = location.pathname === '/payments';
     const isSplitPage = location.pathname === '/all-ads' || location.pathname === '/home' || location.pathname === '/';
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -38,17 +37,17 @@ const MainLayout = () => {
 
                 >
                     {/* TAB MENU  */}
-                    {isMessagesPage || isPaymentsPage ? null : <TabMenu />}
+                    {isMessagesPage ? null : <TabMenu />}
 
 
                     {/* PAGINA EFECTIVĂ */}
                     <Box sx={{
-                        p: isMessagesPage || isSplitPage || isPaymentsPage ? 0 : 3, flexGrow: 1,
+                        p: isMessagesPage || isSplitPage ? 0 : 3, flexGrow: 1,
 
                         display: 'flex',
                         flexDirection: 'column',
                         height: isMessagesPage || isSplitPage ? '100vh' : 'auto',
-                        overflow: isMessagesPage || isSplitPage || isPaymentsPage ? 'hidden' : 'visible',
+                        overflow: isMessagesPage || isSplitPage ? 'hidden' : 'visible',
                         // overflow: 'hidden'
                     }}>
                         <Outlet />
