@@ -13,9 +13,8 @@ import MainLayout from './layouts/MainLayout';
 import AllAdsPage from './pages/adsPage/AllAdsPage';
 import FavouriteAdsPage from './pages/adsPage/FavouritesAdsPage';
 import MyAdsPage from './pages/adsPage/MyAdsPage';
-import MessagePage from './pages/messages/MessagePage';
-import AdsNewPage from './pages/adsPage/AdsNewPage';
 
+import AdsNewPage from './pages/adsPage/AdsNewPage';
 
 // --- CONFIGURARE RUTE ---
 const publicRoutes = [
@@ -47,9 +46,7 @@ const authenticatedRoutesConfig = [
       { path: 'all-ads', element: <AllAdsPage /> },
       { path: 'favorites', element: <FavouriteAdsPage /> },
       { path: '/my-properties', element: <Navigate replace to="/login" /> },
-      { path: '/messages', element: <MessagePage /> },
-      { path: '/my-tenants', element: <MessagePage /> },
-      { path: '/possible-tenants', element: <MessagePage /> },
+
       { path: '/ads/new', element: <AdsNewPage /> },
 
     ],
