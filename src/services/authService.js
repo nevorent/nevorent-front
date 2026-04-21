@@ -54,7 +54,7 @@ export const verifyToken = async (token) => {
     // return await response.json();
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            // verific rolul imi trebuie pentru anumite pagini 
+            //verific rolul imi trebuie pentru anumite pagini 
             if (token.includes("tenant")) {
                 resolve({ name: "Ioan Chiriașul", role: "tenant", email: "chirias@test.com" });
             } else if (token.includes("owner")) {
